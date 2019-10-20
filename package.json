@@ -4,7 +4,7 @@
   "description": "A discord bot for Dungeon Maker using Discord.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,16 @@
   "bugs": {
     "url": "https://github.com/markallenramirez/dmbot/issues"
   },
-  "homepage": "https://github.com/markallenramirez/dmbot#readme"
+  "homepage": "https://github.com/markallenramirez/dmbot#readme",
+  "dependencies": {
+    "discord-paginationembed": "^1.0.2",
+    "discord.js": "^11.5.1",
+    "line-reader": "^0.4.0",
+    "sequelize": "^5.21.1",
+    "sqlite3": "^4.1.0"
+  },
+  "engines": {
+    "node": "10.16.3",
+    "npm": "*"
+  }
 }
