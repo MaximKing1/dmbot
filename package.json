@@ -1,0 +1,23 @@
+{
+  "name": "dmbot",
+  "version": "1.0.0",
+  "description": "A discord bot for Dungeon Maker using Discord.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markallenramirez/dmbot.git"
+  },
+  "keywords": [
+    "discord.js",
+    "git"
+  ],
+  "author": "Mark Allen Ramirez",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/markallenramirez/dmbot/issues"
+  },
+  "homepage": "https://github.com/markallenramirez/dmbot#readme"
+}
