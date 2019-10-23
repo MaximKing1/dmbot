@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
-const database = new Sequelize('slimedb', 'root', 'slimebot', {
-	host: 'localhost',
+const database = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASS, {
+	host: process.env.DB_HOST,
 	dialect: 'sqlite',
 	logging: false,
 	storage: 'data/database.sqlite',
