@@ -1,0 +1,35 @@
+module.exports = (sequelize, DataTypes) => {
+	return sequelize.define('unit', {
+		unit_id: {
+			type: DataTypes.STRING,
+			primaryKey: true,
+		},
+		controller: DataTypes.STRING,
+		sprite: DataTypes.STRING,
+		unittype: DataTypes.STRING,
+		type: DataTypes.STRING,
+		hero: DataTypes.BOOLEAN,
+		race: DataTypes.STRING,
+		lock: DataTypes.BOOLEAN,
+		showdic: DataTypes.BOOLEAN,
+		inherit: DataTypes.BOOLEAN,
+		event: DataTypes.BOOLEAN,
+		beequip: DataTypes.BOOLEAN,
+		mindifficult: DataTypes.INTEGER,
+		grade: DataTypes.INTEGER,
+		showgrade: DataTypes.INTEGER,
+		mental: DataTypes.INTEGER,
+		hpbase: DataTypes.FLOAT,
+		hpgrow: DataTypes.FLOAT,
+		atkbase: DataTypes.FLOAT,
+		atkgrow: DataTypes.FLOAT,
+		defbase: DataTypes.FLOAT,
+		defgrow: DataTypes.FLOAT,
+		avgbase: DataTypes.FLOAT,
+		skills: DataTypes.STRING,
+		recipe: DataTypes.STRING,
+	}, {
+		freezeTableName: true,
+		timestamps: false,
+	});
+};
