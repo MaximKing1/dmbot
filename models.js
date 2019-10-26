@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
-const database = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASS, {
-	host: process.env.DB_HOST,
+const database = new Sequelize('slimebot', 'root', 'slimebot', {
+	host: 'localhost',
 	dialect: 'sqlite',
 	logging: false,
 	storage: 'data/database.sqlite',
@@ -27,6 +27,8 @@ module.exports = {
 	modelStringsRlcDsc: database.import('data/models/StringsRlcDsc'),
 	modelStringsWorld: database.import('data/models/StringsWorld'),
 	modelStringsWorldDsc: database.import('data/models/StringsWorldDsc'),
+	modelStringsRoom: database.import('data/models/StringsRoom'),
+	modelStringsRumDsc: database.import('data/models/StringsRumDsc'),
 	modelTortureEffect: database.import('data/models/TortureEffect'),
 	modelUnit: database.import('data/models/Unit'),
 	modelSkill: database.import('data/models/Skill'),
@@ -39,5 +41,6 @@ module.exports = {
 	modelBeyondTS: database.import('data/models/BeyondTS'),
 	modelMWRebirthChar: database.import('data/models/MWRebirthChar'),
 	modelRelic: database.import('data/models/Relic'),
-	modelWorld: database.import('data/models/World')
+	modelWorld: database.import('data/models/World'),
+	modelRoom: database.import('data/models/Room')
 }
