@@ -59,6 +59,12 @@ module.exports = {
   	zhtw: 'boss',
   	jpn: 'ボス'
   },
+  room : {
+  	eng: 'room',
+  	kor: 'room',
+  	zhtw: 'room',
+  	jpn: 'room'
+  },
   corrupted : {
   	eng: 'Corrupted ',
   	kor: '타락한 ',
@@ -227,6 +233,18 @@ module.exports = {
   	zhtw: 'Say the day of boss battle you would like to search. Say \`0\` to cancel the prompt.',
   	jpn: 'Say the day of boss battle you would like to search. Say \`0\` to cancel the prompt.'
   },
+  prompt_room : {
+  	eng: 'Say the # of room you would like to search. Say \`0\` to cancel the prompt.',
+  	kor: 'Say the # of room you would like to search. Say \`0\` to cancel the prompt.',
+  	zhtw: 'Say the # of room you would like to search. Say \`0\` to cancel the prompt.',
+  	jpn: 'Say the # of room you would like to search. Say \`0\` to cancel the prompt.'
+  },
+  prompt_level : {
+  	eng: 'Say the level of room. Say \`0\` to cancel the prompt.',
+  	kor: 'Say the level of room. Say \`0\` to cancel the prompt.',
+  	zhtw: 'Say the level of room. Say \`0\` to cancel the prompt.',
+  	jpn: 'Say the level of room. Say \`0\` to cancel the prompt.'
+  },
   rebirth : {
   	eng: 'Rebirth',
   	kor: 'Rebirth',
@@ -388,5 +406,35 @@ module.exports = {
     kor: '세계',
   	zhtw: '世界',
   	jpn: '世界'
+  },
+  room_level : {
+    eng: 'Lv. {0}',
+    kor: 'Lv. {0}',
+  	zhtw: 'Lv. {0}',
+  	jpn: 'Lv. {0}'
+  },
+  room_upgrade : {
+    eng: 'Upgrade +{0}',
+    kor: 'Upgrade +{0}',
+  	zhtw: 'Upgrade +{0}',
+  	jpn: 'Upgrade +{0}'
+  },
+  change_level : {
+    eng: 'Change Level',
+    kor: 'Change Level',
+  	zhtw: 'Change Level',
+  	jpn: 'Change Level'
+  },
+  toggle_maxupgrade : {
+    eng: 'Toggle Max Upgrade',
+    kor: 'Toggle Max Upgrade',
+  	zhtw: 'Toggle Max Upgrade',
+  	jpn: 'Toggle Max Upgrade'
+  },
+  soul : {
+    eng: 'Soul',
+    kor: '영혼',
+  	zhtw: '靈魂',
+  	jpn: '霊'
   },
 }
