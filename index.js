@@ -14,7 +14,7 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
-	console.log('Ready!');
+	console.log('dmbot Ready!');
 	client.user.setActivity('Dungeon Maker');
 });
 
