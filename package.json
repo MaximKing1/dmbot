@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/markallenramirez/dmbot#readme",
   "dependencies": {
+    "@discordjs/collection": "^0.1.5",
     "discord-akairo": "github:discord-akairo/discord-akairo",
     "discord-paginationembed": "^2.0.0-beta.4",
     "discord.js": "github:discordjs/discord.js",
