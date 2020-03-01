@@ -28,7 +28,7 @@ class WorldCommand extends Command {
 
     async exec(message, args) {
         let World = this.client.models.World;
-        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
+        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
         
         let result = await World.findAll({
             where: {

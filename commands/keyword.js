@@ -28,7 +28,7 @@ class KeywordCommand extends Command {
 
     async exec(message, args) {
         let Keyword = this.client.models.Keyword;
-        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
+        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
         
         let result = await Keyword.findAll({
             where: {

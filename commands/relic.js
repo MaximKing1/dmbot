@@ -28,7 +28,7 @@ class RelicCommand extends Command {
 
     async exec(message, args) {
         let Relic = this.client.models.Relic;
-        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
+        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
         
         let result = await Relic.findAll({
             where: {

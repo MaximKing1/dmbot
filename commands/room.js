@@ -28,7 +28,7 @@ class RoomCommand extends Command {
 
     async exec(message, args) {
         let Room = this.client.models.Room;
-        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
+        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
         
         let result = await Room.findAll({
             where: {

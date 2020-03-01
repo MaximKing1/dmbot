@@ -28,7 +28,7 @@ class StatusCommand extends Command {
 
     async exec(message, args) {
         let Status = this.client.models.Status;
-        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
+        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
         
         let result = await Status.findAll({
             where: {

@@ -28,7 +28,7 @@ class SkillCommand extends Command {
 
     async exec(message, args) {
         let Skill = this.client.models.Skill;
-        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
+        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
         
         let result = await Skill.findAll({
             where: {

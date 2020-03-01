@@ -28,7 +28,7 @@ class PowerCommand extends Command {
 
     async exec(message, args) {
         let Power = this.client.models.Power;
-        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
+        let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
         
         let result = await Power.findAll({
             where: {
