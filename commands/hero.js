@@ -5,43 +5,48 @@ const { Op } = require('sequelize');
 
 const spriteUrl = 'https://res.cloudinary.com/hq0ppy0db/image/upload/v1571737090/Sprites/';
 const aliases = {
-    // "Kor": "세계",
-    "Eng": "World",
-    // "zhCN": "世界",
-    // "zhTW": "世界",
-    // "Jpn": "世界"
+    // "Kor": "용사",
+    "Eng": "Hero",
+    // "zhCN": "勇士",
+    // "zhTW": "勇士",
+    // "Jpn": "勇士"
 };
 
-class WorldCommand extends Command {
+class HeroCommand extends Command {
     constructor() {
-        super('world', {
+        super('hero', {
            aliases: Object.values(aliases),
            args: [
                 {
                     id: 'searchString',
                     type: 'string',
                     match: 'text'
+                }, {
+                    id: 'corrupt',
+                    match: 'flag',
+                    prefix: '-c'
                 }
             ]
         });
     }
 
     async exec(message, args) {
-        let World = this.client.models.World;
+        let Hero = this.client.models.Hero;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
-        
-        let result = await World.findAll({
+        console.log(args.corrupt);
+
+        let result = await Hero.findAll({
             where: {
                 name: {
                     [lang]: {
-                        [Op.substring]: args.searchString
+                        [Op.like]: args.searchString
                     }
                 }
             }
         });
 
         if (result.length == 0) {
-            result = await Status.findAll({
+            result = await Hero.findAll({
                 where: {
                     name: {
                         [lang]: {
@@ -55,8 +60,8 @@ class WorldCommand extends Command {
         if (result.length > 1) {
             let embeds = [];
             let items = [];
-            await result.forEach((world, i) => {
-                items.push(`${i + 1}\t•\t${world.name[lang]}`);
+            await result.forEach((hero, i) => {
+                items.push(`${i + 1}\t•\t${hero.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')
@@ -78,21 +83,47 @@ class WorldCommand extends Command {
                 pagedEmbed.setClientAssets({ message: reply }).build();
             });
         } else if (result.length == 1) {
-            let world = result[0];
+            let hero = result[0];
 
-            const embed = new MessageEmbed()
+            let icon = `${spriteUrl}${hero.data.Sprite}_icon.png`;
+            let idle = `${spriteUrl}${hero.data.Sprite}_idle01.png`;
+            const embed0 = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(world.name[lang])
-            .setImage(`${spriteUrl}${world.id}.png`)
-            .setDescription(`• ${world.getDesc(lang)}`);
+            .setAuthor(hero.name[lang], icon)
+            .setThumbnail(idle);
+
+            const embed1 = new MessageEmbed()
+            .setColor('#f296fb')
+            .setAuthor(hero.name[lang]);
+            let skills = [];
+            let skillNames = [];
+            for(let skill of await hero.getSkills()) {
+                skills.push(`**${skill.getName(lang)}**\n• ${skill.getDesc(lang)}`);
+                skillNames.push(`• ${skill.getName(lang)}`);
+            }
+            embed1.addField('Skills', skills.join('\n'));
+            embed0.addField('Skills', skillNames.join('\n'));
+
+            let bestTools = [];
+            for(let bestTool of await hero.getBestTool()) {
+                bestTools.push(`${bestTool.name[lang]}`);
+            }
+            let niceTools = [];
+            for(let niceTool of await hero.getNiceTool()) {
+                niceTools.push(`${niceTool.name[lang]}`);
+            }
+            let desc = [];
+            desc.push(`<:tl_6:683189304591122450> ${bestTools.length > 0 ? bestTools.join('') : 'None'}`);
+            desc.push(`<:tl_5:683189304809619499> ${niceTools.join('')}`);
+            embed0.setDescription(`${hero.getGrade()}\n\n${desc.join('\n')}`);
 
             const pagedEmbed = new Pagination.Embeds()
-            .setArray([embed])
+            .setArray([embed0, embed1])
             .setAuthorizedUsers([message.author.id])
             .setChannel(message.channel)
             .setPageIndicator(false)
             .setDeleteOnTimeout(true)
-            .setDisabledNavigationEmojis(['BACK', 'JUMP', 'FORWARD'])
+            .setDisabledNavigationEmojis(['JUMP'])
             .setFooter(' ')
             .addFunctionEmoji('📌', (user, instance) => {
                 if (user == message.author) {
@@ -108,4 +139,4 @@ class WorldCommand extends Command {
     }
 }
 
-module.exports = WorldCommand;
+module.exports = HeroCommand;

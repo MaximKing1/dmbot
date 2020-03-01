@@ -5,16 +5,16 @@ const { Op } = require('sequelize');
 
 const spriteUrl = 'https://res.cloudinary.com/hq0ppy0db/image/upload/v1571737090/Sprites/';
 const aliases = {
-    // "Kor": "세계",
-    "Eng": "World",
-    // "zhCN": "世界",
-    // "zhTW": "世界",
-    // "Jpn": "世界"
+    // "Kor": "키워드",
+    "Eng": "Keyword",
+    // "zhCN": "关键词",
+    // "zhTW": "關鍵字",
+    // "Jpn": "キーワード"
 };
 
-class WorldCommand extends Command {
+class KeywordCommand extends Command {
     constructor() {
-        super('world', {
+        super('keyword', {
            aliases: Object.values(aliases),
            args: [
                 {
@@ -27,21 +27,21 @@ class WorldCommand extends Command {
     }
 
     async exec(message, args) {
-        let World = this.client.models.World;
+        let Keyword = this.client.models.Keyword;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
         
-        let result = await World.findAll({
+        let result = await Keyword.findAll({
             where: {
                 name: {
                     [lang]: {
-                        [Op.substring]: args.searchString
+                        [Op.like]: args.searchString
                     }
                 }
             }
         });
 
         if (result.length == 0) {
-            result = await Status.findAll({
+            result = await Keyword.findAll({
                 where: {
                     name: {
                         [lang]: {
@@ -55,8 +55,8 @@ class WorldCommand extends Command {
         if (result.length > 1) {
             let embeds = [];
             let items = [];
-            await result.forEach((world, i) => {
-                items.push(`${i + 1}\t•\t${world.name[lang]}`);
+            await result.forEach((keyword, i) => {
+                items.push(`${i + 1}\t•\t${keyword.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')
@@ -78,13 +78,18 @@ class WorldCommand extends Command {
                 pagedEmbed.setClientAssets({ message: reply }).build();
             });
         } else if (result.length == 1) {
-            let world = result[0];
+            let keyword = result[0];
+
+            let subDesc = [];
+            keyword.data.forEach((data, i) => {
+                subDesc.push(`${data.Stack} • ${keyword.getSubDesc(lang)[i]}`);
+            });
 
             const embed = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(world.name[lang])
-            .setImage(`${spriteUrl}${world.id}.png`)
-            .setDescription(`• ${world.getDesc(lang)}`);
+            .setAuthor(keyword.name[lang], `${spriteUrl}${keyword.id}_0.png`)
+            .setDescription(`• ${keyword.getDesc(lang)}`)
+            .addField('Stack', subDesc.join('\n'));
 
             const pagedEmbed = new Pagination.Embeds()
             .setArray([embed])
@@ -108,4 +113,4 @@ class WorldCommand extends Command {
     }
 }
 
-module.exports = WorldCommand;
+module.exports = KeywordCommand;

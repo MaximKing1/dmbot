@@ -1,22 +1,31 @@
+const { Model } = require('sequelize');
+const N = require('numeral');
+
+class Relic extends Model {
+    getDesc(lang = 'Eng') {
+        let desc = this.desc[lang];
+        desc = desc.replaceAll('[V1]', this.data.Value01);
+        desc = desc.replaceAll('[V1P]', N(this.data.Value01).format('0 %'));
+        desc = desc.replaceAll('[V2]', this.data.Value02);
+        desc = desc.replaceAll('[V2P]', N(this.data.Value02).format('0 %'));
+        desc = desc.replaceAll('[MANACRYSTAL]', 'Mana Crystal');
+        desc = desc.replaceAll('[EMPTY_MANACRYSTAL]', 'Empty Mana Crystal');
+
+        return desc;
+    }
+}
+
 module.exports = (sequelize, DataTypes) => {
-	return sequelize.define('relic', {
-		relic_id: {
-			type: DataTypes.STRING,
-			primaryKey: true,
-		},
-		grade: DataTypes.INTEGER,
-		value01: DataTypes.FLOAT,
-		v1lv: DataTypes.FLOAT,
-		value02: DataTypes.FLOAT,
-		v2lv: DataTypes.FLOAT,
-		special: DataTypes.STRING,
-		lock: DataTypes.BOOLEAN,
-		showdic: DataTypes.BOOLEAN,
-		repeat: DataTypes.BOOLEAN,
-		loop: DataTypes.BOOLEAN,
-		event: DataTypes.BOOLEAN,
-	}, {
-		freezeTableName: true,
-		timestamps: false,
-	});
-};
+    return Relic.init({
+        id: {
+            type: DataTypes.STRING,
+            primaryKey: true
+        },
+        name: DataTypes.JSON,
+        desc: DataTypes.JSON,
+        data: DataTypes.JSON
+    }, {
+        sequelize,
+        modelName: 'Relic'
+    });
+}

@@ -5,16 +5,16 @@ const { Op } = require('sequelize');
 
 const spriteUrl = 'https://res.cloudinary.com/hq0ppy0db/image/upload/v1571737090/Sprites/';
 const aliases = {
-    // "Kor": "세계",
-    "Eng": "World",
-    // "zhCN": "世界",
-    // "zhTW": "世界",
-    // "Jpn": "世界"
+    // "Kor": "몬스터",
+    "Eng": "Monster",
+    // "zhCN": "怪兽",
+    // "zhTW": "怪獸",
+    // "Jpn": "魔物"
 };
 
-class WorldCommand extends Command {
+class MonsterCommand extends Command {
     constructor() {
-        super('world', {
+        super('monster', {
            aliases: Object.values(aliases),
            args: [
                 {
@@ -23,25 +23,25 @@ class WorldCommand extends Command {
                     match: 'text'
                 }
             ]
-        });
+        }); 
     }
 
     async exec(message, args) {
-        let World = this.client.models.World;
+        let Monster = this.client.models.Monster;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
         
-        let result = await World.findAll({
+        let result = await Monster.findAll({
             where: {
                 name: {
                     [lang]: {
-                        [Op.substring]: args.searchString
+                        [Op.like]: args.searchString
                     }
                 }
             }
         });
 
         if (result.length == 0) {
-            result = await Status.findAll({
+            result = await Monster.findAll({
                 where: {
                     name: {
                         [lang]: {
@@ -52,11 +52,15 @@ class WorldCommand extends Command {
             });
         }
 
+        if (result[0].name['Eng'] == 'Gargoyle Girl') {
+            result = [result[0]];
+        }
+
         if (result.length > 1) {
             let embeds = [];
             let items = [];
-            await result.forEach((world, i) => {
-                items.push(`${i + 1}\t•\t${world.name[lang]}`);
+            await result.forEach((monster, i) => {
+                items.push(`${i + 1}\t•\t${monster.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')
@@ -78,21 +82,51 @@ class WorldCommand extends Command {
                 pagedEmbed.setClientAssets({ message: reply }).build();
             });
         } else if (result.length == 1) {
-            let world = result[0];
+            let monster = result[0];
 
-            const embed = new MessageEmbed()
+            let icon = `${spriteUrl}${monster.data.Sprite}_icon.png`;
+            let idle = `${spriteUrl}${monster.data.Sprite}_idle01.png`;
+            let desc = [];
+            desc.push(`<:card_hp:683194281447653432> ${monster.data.HPBase}`);
+            desc.push(`<:card_st:683194281195733009> ${monster.data.AtkBase}`);
+            desc.push(`<:card_df:683194281199927306> ${monster.data.DefBase}`);
+            const embed0 = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(world.name[lang])
-            .setImage(`${spriteUrl}${world.id}.png`)
-            .setDescription(`• ${world.getDesc(lang)}`);
+            .setAuthor(monster.name[lang], icon)
+            .setThumbnail(idle)
+            .setDescription(`${monster.getGrade()}\n\n${desc.join('')}`);
+
+            const embed1 = new MessageEmbed()
+            .setColor('#f296fb')
+            .setAuthor(monster.name[lang]);
+            let skills = [];
+            let skillNames = [];
+            for(let skill of await monster.getSkills()) {
+                skills.push(`**${skill.getName(lang)}**\n• ${skill.getDesc(lang)}`);
+                skillNames.push(`• ${skill.getName(lang)}`);
+            }
+            embed1.addField('Skills', skills.join('\n'));
+            embed0.addField('Skills', skillNames.join('\n'));
+
+            const embed2 = new MessageEmbed()
+            .setColor('#f296fb')
+            .setAuthor(monster.name[lang]);
+            let keywords = [];
+            let keywordNames = [];
+            for(let keyword of await monster.getKeywords()) {
+                keywords.push(`**${keyword.name[lang]}**\n• ${keyword.getDesc(lang)}`);
+                keywordNames.push(`• ${keyword.name[lang]}`);
+            }
+            embed2.addField('Keywords', keywords.join('\n'));
+            embed0.addField('Keywords', `${keywordNames.join('\n')}`);
 
             const pagedEmbed = new Pagination.Embeds()
-            .setArray([embed])
+            .setArray([embed0, embed1, embed2])
             .setAuthorizedUsers([message.author.id])
             .setChannel(message.channel)
             .setPageIndicator(false)
             .setDeleteOnTimeout(true)
-            .setDisabledNavigationEmojis(['BACK', 'JUMP', 'FORWARD'])
+            .setDisabledNavigationEmojis(['JUMP'])
             .setFooter(' ')
             .addFunctionEmoji('📌', (user, instance) => {
                 if (user == message.author) {
@@ -108,4 +142,4 @@ class WorldCommand extends Command {
     }
 }
 
-module.exports = WorldCommand;
+module.exports = MonsterCommand;

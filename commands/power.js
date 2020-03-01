@@ -6,15 +6,15 @@ const { Op } = require('sequelize');
 const spriteUrl = 'https://res.cloudinary.com/hq0ppy0db/image/upload/v1571737090/Sprites/';
 const aliases = {
     // "Kor": "세계",
-    "Eng": "World",
+    "Eng": "Power",
     // "zhCN": "世界",
     // "zhTW": "世界",
     // "Jpn": "世界"
 };
 
-class WorldCommand extends Command {
+class PowerCommand extends Command {
     constructor() {
-        super('world', {
+        super('power', {
            aliases: Object.values(aliases),
            args: [
                 {
@@ -27,21 +27,21 @@ class WorldCommand extends Command {
     }
 
     async exec(message, args) {
-        let World = this.client.models.World;
+        let Power = this.client.models.Power;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.alias.toLowerCase());
         
-        let result = await World.findAll({
+        let result = await Power.findAll({
             where: {
                 name: {
                     [lang]: {
-                        [Op.substring]: args.searchString
+                        [Op.like]: args.searchString
                     }
                 }
             }
         });
 
         if (result.length == 0) {
-            result = await Status.findAll({
+            result = await Power.findAll({
                 where: {
                     name: {
                         [lang]: {
@@ -55,8 +55,8 @@ class WorldCommand extends Command {
         if (result.length > 1) {
             let embeds = [];
             let items = [];
-            await result.forEach((world, i) => {
-                items.push(`${i + 1}\t•\t${world.name[lang]}`);
+            await result.forEach((power, i) => {
+                items.push(`${i + 1}\t•\t${power.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')
@@ -78,13 +78,12 @@ class WorldCommand extends Command {
                 pagedEmbed.setClientAssets({ message: reply }).build();
             });
         } else if (result.length == 1) {
-            let world = result[0];
+            let power = result[0];
 
             const embed = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(world.name[lang])
-            .setImage(`${spriteUrl}${world.id}.png`)
-            .setDescription(`• ${world.getDesc(lang)}`);
+            .setAuthor(`${power.name[lang]} (${power.data.Cost})`, `${spriteUrl}${power.id}.png`)
+            .setDescription(`• ${power.getDesc(lang)}`);
 
             const pagedEmbed = new Pagination.Embeds()
             .setArray([embed])
@@ -108,4 +107,4 @@ class WorldCommand extends Command {
     }
 }
 
-module.exports = WorldCommand;
+module.exports = PowerCommand;
