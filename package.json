@@ -1,6 +1,6 @@
 {
   "name": "dmbot",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A discord bot for Dungeon Maker using Discord.js",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,6 @@
   },
   "engines": {
     "node": "12.16.1",
-    "npm": "*"
+    "npm": "6.13.4"
   }
 }
