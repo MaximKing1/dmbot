@@ -1,13 +1,10 @@
 const Sequelize = require('sequelize');
 
-const spriteUrl = 'https://res.cloudinary.com/hq0ppy0db/image/upload/v1571737090/Sprites/';
-
 let e = {};
 e.database = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASS, {
-	host: `${spriteUrl}`,
 	dialect: 'sqlite',
 	logging: false,
-	storage: 'database.sqlite',
+	storage: 'data/database.sqlite',
 });
 // # Database Models
 e.Relic = e.database.import('data/models/relic');

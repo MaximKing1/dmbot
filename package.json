@@ -1,6 +1,6 @@
 {
   "name": "dmbot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A discord bot for Dungeon Maker using Discord.js",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,6 @@
     "discord-akairo": "^7.5.6",
     "discord-paginationembed": "^2.0.0-beta.4",
     "discord.js": "github:discordjs/discord.js",
-    "discord.js-commando": "github:discordjs/Commando",
     "line-reader": "^0.4.0",
     "numeral": "^2.0.6",
     "sequelize": "^5.21.1",
@@ -32,7 +31,7 @@
     "string.prototype.replaceall": "^1.0.3"
   },
   "engines": {
-    "node": "10.16.3",
+    "node": "12.16.1",
     "npm": "*"
   }
 }
