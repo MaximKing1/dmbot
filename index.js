@@ -6,14 +6,18 @@ replaceAll.shim();
 class DMClient extends AkairoClient {
   constructor() {
     super({
-      ownerID: '308147981314424840',
-      prefix: '!',
-      commandUtil: true,
-      commandUtilLifetime: 30000,
-      commandDirectory: './commands/',
+      ownerID: '308147981314424840'
     }, {
       disableEveryone: true
     });
+
+    this.commandHandler = new CommandHandler(this, {
+      directory: './commands/',
+      prefix: '!',
+      commandUtil: true,
+    });
+
+    this.commandHandler.loadAll();
   }
 }
 
