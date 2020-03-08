@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord-akairo');
 const Pagination = require('discord-paginationembed');
-const { Op } = require('sequelize');
+var chance = require('chance').Chance();
 
 class RollCommand extends Command {
     constructor() {
@@ -36,25 +36,24 @@ class RollCommand extends Command {
             }
         }
 
-        let dice = await roll(num, size);
+        let dice = roll(num, size);
 
-        message.channel.send(`${message.author} 🎲\n**Result:** ${num}d${size} (${dice[1].join(', ')})\n**Total:** ${dice[0]}`);
+        message.channel.send(`${message.author} 🎲\n**Result:** ${num}d${size} (${dice.values.join(', ')})\n**Total:** ${dice.total}`);
     }
 }
 
 function roll(num, size) {
-    return new Promise(resolve => {
-      let result = [];
-      let total = 0;
-  
-      for (let i = 0; i < num; i++) {
-        let rng = Math.floor(Math.random() * size) + 1;
-        result.push(rng);
-        total += rng;
-      }
-  
-      resolve([total, result]);
-    });
+    var result = chance.rpg(`${num}d${size}`);
+    var sum = 0;
+
+    for (var i of result) {
+        sum += i;
+    }
+
+    return {
+        values: result,
+        total: sum
+    };
   }
 
 module.exports = RollCommand;

@@ -24,7 +24,7 @@ class HeroCommand extends Command {
                 }, {
                     id: 'corrupt',
                     match: 'flag',
-                    prefix: '-c'
+                    flag: '-c'
                 }
             ]
         });
@@ -33,7 +33,7 @@ class HeroCommand extends Command {
     async exec(message, args) {
         let Hero = this.client.models.Hero;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
-        console.log(args.corrupt);
+        //console.log(args.corrupt);
 
         let result = await Hero.findAll({
             where: {
