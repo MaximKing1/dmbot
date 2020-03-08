@@ -3,7 +3,7 @@ const { Command } = require('discord-akairo');
 const Pagination = require('discord-paginationembed');
 const { Op } = require('sequelize');
 
-const spriteUrl = `${process.env.CLOUDINARY_URL}/`;
+const spriteUrl = process.env.CLOUDINARY_SPRITEURL;
 const aliases = {
     // "Kor": "세계",
     "Eng": "World",
