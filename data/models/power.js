@@ -2,6 +2,10 @@ const { Model } = require('sequelize');
 const N = require('numeral');
 
 class Power extends Model {
+    getName(lang = 'Eng') {
+        return `${this.name[lang]} (${this.data.Cost})`;
+    }
+
     getDesc(lang = 'Eng', fac = 10) {
         let desc = this.desc[lang];
         desc = desc.replaceAll('[DMG]', N(this.data.Dmg + (this.data.ATK * fac)).format('0'));

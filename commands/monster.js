@@ -20,7 +20,8 @@ class MonsterCommand extends Command {
                 {
                     id: 'searchString',
                     type: 'string',
-                    match: 'text'
+                    match: 'text',
+                    default: ''
                 }
             ]
         }); 
@@ -98,26 +99,24 @@ class MonsterCommand extends Command {
 
             const embed1 = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(monster.name[lang]);
-            let skills = [];
+            .setAuthor(monster.name[lang], icon)
+            .setThumbnail(idle)
             let skillNames = [];
             for(let skill of await monster.getSkills()) {
-                skills.push(`**${skill.getName(lang)}**\n• ${skill.getDesc(lang)}`);
+                embed1.addField(`**${skill.getName(lang)}**`, `• ${skill.getDesc(lang)}`);
                 skillNames.push(`• ${skill.getName(lang)}`);
             }
-            embed1.addField('Skills', skills.join('\n'));
             embed0.addField('Skills', skillNames.join('\n'));
 
             const embed2 = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(monster.name[lang]);
-            let keywords = [];
+            .setAuthor(monster.name[lang], icon)
+            .setThumbnail(idle)
             let keywordNames = [];
             for(let keyword of await monster.getKeywords()) {
-                keywords.push(`**${keyword.name[lang]}**\n• ${keyword.getDesc(lang)}`);
+                embed2.addField(`**${keyword.name[lang]}**`, `• ${keyword.getDesc(lang)}`);
                 keywordNames.push(`• ${keyword.name[lang]}`);
             }
-            embed2.addField('Keywords', keywords.join('\n'));
             embed0.addField('Keywords', `${keywordNames.join('\n')}`);
 
             const pagedEmbed = new Pagination.Embeds()

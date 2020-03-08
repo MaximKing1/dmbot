@@ -2,6 +2,10 @@ const { Model } = require('sequelize');
 const N = require('numeral');
 
 class Rebirth extends Model {
+    getName(lang = 'Eng') {
+        return `Lv.${this.data.Lv} ${this.name[lang]}`;
+    }
+
     getDesc(lang = 'Eng') {
         let desc = this.desc[lang];
         desc = desc.replaceAll('[V1]', this.data.Value);

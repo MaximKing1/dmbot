@@ -20,7 +20,8 @@ class RoomCommand extends Command {
                 {
                     id: 'searchString',
                     type: 'string',
-                    match: 'text'
+                    match: 'text',
+                    default: ''
                 }
             ]
         });

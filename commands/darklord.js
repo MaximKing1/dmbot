@@ -5,16 +5,16 @@ const { Op } = require('sequelize');
 
 const spriteUrl = 'https://res.cloudinary.com/hq0ppy0db/image/upload/v1571737090/Sprites/';
 const aliases = {
-    // "Kor": "스킬",
-    "Eng": "Status",
-    // "zhCN": "技能",
-    // "zhTW": "技能",
-    // "Jpn": "スキル"
+    // "Kor": "몬스터",
+    "Eng": "DarkLord",
+    // "zhCN": "怪兽",
+    // "zhTW": "怪獸",
+    // "Jpn": "魔物"
 };
 
-class StatusCommand extends Command {
+class DarkLordCommand extends Command {
     constructor() {
-        super('status', {
+        super('darklord', {
            aliases: Object.values(aliases),
            args: [
                 {
@@ -24,14 +24,14 @@ class StatusCommand extends Command {
                     default: ''
                 }
             ]
-        });
+        }); 
     }
 
     async exec(message, args) {
-        let Status = this.client.models.Status;
+        let DarkLord = this.client.models.DarkLord;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
         
-        let result = await Status.findAll({
+        let result = await DarkLord.findAll({
             where: {
                 name: {
                     [lang]: {
@@ -42,7 +42,7 @@ class StatusCommand extends Command {
         });
 
         if (result.length == 0) {
-            result = await Status.findAll({
+            result = await DarkLord.findAll({
                 where: {
                     name: {
                         [lang]: {
@@ -56,8 +56,8 @@ class StatusCommand extends Command {
         if (result.length > 1) {
             let embeds = [];
             let items = [];
-            await result.forEach((status, i) => {
-                items.push(`${i + 1}\t•\t${status.name[lang]}`);
+            await result.forEach((darklord, i) => {
+                items.push(`${i + 1}\t•\t${darklord.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')
@@ -79,20 +79,60 @@ class StatusCommand extends Command {
                 pagedEmbed.setClientAssets({ message: reply }).build();
             });
         } else if (result.length == 1) {
-            let status = result[0];
+            let darklord = result[0];
 
-            const embed = new MessageEmbed()
+            let icon = `${spriteUrl}${darklord.data.Sprite}_icon.png`;
+            let idle = `${spriteUrl}${darklord.data.Sprite}_idle01.png`;
+            let desc = [];
+            desc.push(`<:card_hp:683194281447653432> ${darklord.data.HPBase}`);
+            desc.push(`<:card_st:683194281195733009> ${darklord.data.AtkBase}`);
+            desc.push(`<:card_df:683194281199927306> ${darklord.data.DefBase}`);
+            const embed0 = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(status.name[lang], `${spriteUrl}B_${status.id.substring(1).toUpperCase()}.png`)
-            .setDescription(`• ${status.getDesc(lang)}`);
+            .setAuthor(darklord.name[lang], icon)
+            .setThumbnail(idle)
+            .setDescription(`${desc.join('')}`);
+
+            const embed1 = new MessageEmbed()
+            .setColor('#f296fb')
+            .setAuthor(darklord.name[lang], icon)
+            .setThumbnail(idle)
+            let powerNames = [];
+            for(let power of (await darklord.getPowers()).sort((a, b) => a.data.Cost - b.data.Cost)) {
+                embed1.addField(`**${power.getName(lang)}**`, `• ${power.getDesc(lang)}`);
+                powerNames.push(`• ${power.getName(lang)}`);
+            }
+            embed0.addField('Boss Skills', powerNames.join('\n'));
+
+            const embed2 = new MessageEmbed()
+            .setColor('#f296fb')
+            .setAuthor(darklord.name[lang], icon)
+            .setThumbnail(idle)
+            let rebirthNames = [];
+            for(let rebirth of (await darklord.getRebirths()).sort((a, b) => a.data.Lv - b.data.Lv)) {
+                embed2.addField(`**${rebirth.getName(lang)}**`, `• ${rebirth.getDesc(lang)}`);
+                rebirthNames.push(`• ${rebirth.getName(lang)}`);
+            }
+            embed0.addField('Rebirth', rebirthNames.join('\n'));
+
+            const embed3 = new MessageEmbed()
+            .setColor('#f296fb')
+            .setAuthor(darklord.name[lang], icon)
+            .setThumbnail(idle)
+            let awakeningNames = [];
+            for(let awakening of (await darklord.getAwakenings()).sort((a, b) => a.data.Lv - b.data.Lv)) {
+                embed3.addField(`**${awakening.getName(lang)}**`, `• ${awakening.getDesc(lang)}`);
+                awakeningNames.push(`• ${awakening.getName(lang)}`);
+            }
+            embed0.addField('Awakening', awakeningNames.join('\n'));
 
             const pagedEmbed = new Pagination.Embeds()
-            .setArray([embed])
+            .setArray([embed0, embed1, embed2, embed3])
             .setAuthorizedUsers([message.author.id])
             .setChannel(message.channel)
             .setPageIndicator(false)
             .setDeleteOnTimeout(true)
-            .setDisabledNavigationEmojis(['BACK', 'JUMP', 'FORWARD'])
+            .setDisabledNavigationEmojis(['JUMP'])
             .setFooter(' ')
             .addFunctionEmoji('📌', (user, instance) => {
                 if (user == message.author) {
@@ -108,4 +148,4 @@ class StatusCommand extends Command {
     }
 }
 
-module.exports = StatusCommand;
+module.exports = DarkLordCommand;

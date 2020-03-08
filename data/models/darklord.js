@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             primaryKey: true
         },
-        name: DataTypes.JSON
+        name: DataTypes.JSON,
+        data: DataTypes.JSON
     }, {
         sequelize,
         modelName: 'DarkLord'

@@ -11,7 +11,8 @@ class RollCommand extends Command {
                 {
                     id: 'searchString',
                     type: 'string',
-                    match: 'text'
+                    match: 'text',
+                    default: '1d6'
                 }
             ]
         });

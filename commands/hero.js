@@ -20,7 +20,8 @@ class HeroCommand extends Command {
                 {
                     id: 'searchString',
                     type: 'string',
-                    match: 'text'
+                    match: 'text',
+                    default: ''
                 }, {
                     id: 'corrupt',
                     match: 'flag',
@@ -94,14 +95,13 @@ class HeroCommand extends Command {
 
             const embed1 = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(hero.name[lang]);
-            let skills = [];
+            .setAuthor(hero.name[lang], icon)
+            .setThumbnail(idle);
             let skillNames = [];
             for(let skill of await hero.getSkills()) {
-                skills.push(`**${skill.getName(lang)}**\n• ${skill.getDesc(lang)}`);
+                embed1.addField(`**${skill.getName(lang)}**`, `• ${skill.getDesc(lang)}`);
                 skillNames.push(`• ${skill.getName(lang)}`);
             }
-            embed1.addField('Skills', skills.join('\n'));
             embed0.addField('Skills', skillNames.join('\n'));
 
             let bestTools = [];
