@@ -57,7 +57,7 @@ class RoomCommand extends Command {
             let embeds = [];
             let items = [];
             await result.forEach((room, i) => {
-                items.push(`${i + 1}\t•\t${room.name[lang]}`);
+                items.push(`${i + 1} • ${room.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')

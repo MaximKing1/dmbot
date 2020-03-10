@@ -87,7 +87,7 @@ class HeroCommand extends Command {
             let embeds = [];
             let items = [];
             await result.forEach((hero, i) => {
-                items.push(`${i + 1} • ${args.corrupt ? 'Corrupted' : ''} ${hero.getName(lang)}`);
+                items.push(`${i + 1} • ${hero.getName(lang)}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')

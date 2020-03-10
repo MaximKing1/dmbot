@@ -57,7 +57,7 @@ class SkillCommand extends Command {
             let embeds = [];
             let items = [];
             await result.forEach((skill, i) => {
-                items.push(`${i + 1}\t•\t${skill.name[lang]}`);
+                items.push(`${i + 1} • ${skill.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')

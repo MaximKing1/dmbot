@@ -57,7 +57,7 @@ class PowerCommand extends Command {
             let embeds = [];
             let items = [];
             await result.forEach((power, i) => {
-                items.push(`${i + 1}\t•\t${power.name[lang]}`);
+                items.push(`${i + 1} • ${power.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')

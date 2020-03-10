@@ -57,7 +57,7 @@ class DarkLordCommand extends Command {
             let embeds = [];
             let items = [];
             await result.forEach((darklord, i) => {
-                items.push(`${i + 1}\t•\t${darklord.name[lang]}`);
+                items.push(`${i + 1} • ${darklord.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')

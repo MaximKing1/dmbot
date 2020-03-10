@@ -57,7 +57,7 @@ class WorldCommand extends Command {
             let embeds = [];
             let items = [];
             await result.forEach((world, i) => {
-                items.push(`${i + 1}\t•\t${world.name[lang]}`);
+                items.push(`${i + 1} • ${world.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')

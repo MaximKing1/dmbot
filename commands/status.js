@@ -57,7 +57,7 @@ class StatusCommand extends Command {
             let embeds = [];
             let items = [];
             await result.forEach((status, i) => {
-                items.push(`${i + 1}\t•\t${status.name[lang]}`);
+                items.push(`${i + 1} • ${status.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')
