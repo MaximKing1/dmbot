@@ -3,7 +3,6 @@ const { Command } = require('discord-akairo');
 const Pagination = require('discord-paginationembed');
 const { Op } = require('sequelize');
 
-const spriteUrl = process.env.CLOUDINARY_SPRITEURL;
 const aliases = {
     // "Kor": "유물",
     "Eng": "Relic",
@@ -28,6 +27,7 @@ class RelicCommand extends Command {
     }
 
     async exec(message, args) {
+        let spriteUrl = this.client.cloudinary;
         let Relic = this.client.models.Relic;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
         

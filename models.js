@@ -18,6 +18,7 @@ e.TortureTool = e.database.import('data/models/torturetool');
 e.Keyword = e.database.import('data/models/keyword');
 e.Monster = e.database.import('data/models/monster');
 e.Hero = e.database.import('data/models/hero');
+e.Corrupted = e.database.import('data/models/corrupted');
 e.DarkLord = e.database.import('data/models/darklord');
 e.Room = e.database.import('data/models/room');
 
@@ -49,6 +50,12 @@ e.TortureTool.belongsToMany(e.Hero, { as: 'FailHero', through: 'HeroFailTools' }
 // Hero - TortureTool - Immune
 e.Hero.belongsToMany(e.TortureTool, { as: 'ImmuneTool', through: 'HeroImmuneTools' });
 e.TortureTool.belongsToMany(e.Hero, { as: 'ImmuneHero', through: 'HeroImmuneTools' });
+// Corrupted - Skill
+e.Corrupted.belongsToMany(e.Skill, { through: 'CorruptedSkills' });
+e.Skill.belongsToMany(e.Corrupted, { through: 'CorruptedSkills' });
+// Corrupted - Keyword
+e.Corrupted.belongsToMany(e.Keyword, { through: 'CorruptedKeywords' });
+e.Keyword.belongsToMany(e.Corrupted, { through: 'CorruptedKeywords' });
 // DarkLord - Power
 e.DarkLord.belongsToMany(e.Power, { through: 'DarkLordPowers' });
 e.Power.belongsToMany(e.DarkLord, { through: 'DarkLordPowers' });

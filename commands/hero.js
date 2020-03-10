@@ -3,7 +3,6 @@ const { Command } = require('discord-akairo');
 const Pagination = require('discord-paginationembed');
 const { Op } = require('sequelize');
 
-const spriteUrl = process.env.CLOUDINARY_SPRITEURL;
 const aliases = {
     // "Kor": "용사",
     "Eng": "Hero",
@@ -32,37 +31,63 @@ class HeroCommand extends Command {
     }
 
     async exec(message, args) {
+        let spriteUrl = this.client.cloudinary;
         let Hero = this.client.models.Hero;
+        let Corrupted = this.client.models.Corrupted;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
-        //console.log(args.corrupt);
-
-        let result = await Hero.findAll({
-            where: {
-                name: {
-                    [lang]: {
-                        [Op.like]: args.searchString
-                    }
-                }
-            }
-        });
-
-        if (result.length == 0) {
+        
+        let result;
+        if (!args.corrupt) {
             result = await Hero.findAll({
                 where: {
                     name: {
                         [lang]: {
-                            [Op.substring]: args.searchString
+                            [Op.like]: args.searchString
                         }
                     }
                 }
             });
+    
+            if (result.length == 0) {
+                result = await Hero.findAll({
+                    where: {
+                        name: {
+                            [lang]: {
+                                [Op.substring]: args.searchString
+                            }
+                        }
+                    }
+                });
+            }
+        } else {
+            result = await Corrupted.findAll({
+                where: {
+                    name: {
+                        [lang]: {
+                            [Op.like]: args.searchString
+                        }
+                    }
+                }
+            });
+    
+            if (result.length == 0) {
+                result = await Corrupted.findAll({
+                    where: {
+                        name: {
+                            [lang]: {
+                                [Op.substring]: args.searchString
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         if (result.length > 1) {
             let embeds = [];
             let items = [];
             await result.forEach((hero, i) => {
-                items.push(`${i + 1}\t•\t${hero.name[lang]}`);
+                items.push(`${i + 1} • ${args.corrupt ? 'Corrupted' : ''} ${hero.name[lang]}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')
@@ -85,6 +110,7 @@ class HeroCommand extends Command {
             });
         } else if (result.length == 1) {
             let hero = result[0];
+            let embeds = [];
 
             let icon = `${spriteUrl}${hero.data.Sprite}_icon.png`;
             let idle = `${spriteUrl}${hero.data.Sprite}_idle01.png`;
@@ -92,6 +118,7 @@ class HeroCommand extends Command {
             .setColor('#f296fb')
             .setAuthor(hero.name[lang], icon)
             .setThumbnail(idle);
+            embeds.push(embed0);
 
             const embed1 = new MessageEmbed()
             .setColor('#f296fb')
@@ -102,23 +129,43 @@ class HeroCommand extends Command {
                 embed1.addField(`**${skill.getName(lang)}**`, `• ${skill.getDesc(lang)}`);
                 skillNames.push(`• ${skill.getName(lang)}`);
             }
+            embeds.push(embed1);
             embed0.addField('Skills', skillNames.join('\n'));
 
-            let bestTools = [];
-            for(let bestTool of await hero.getBestTool()) {
-                bestTools.push(`${bestTool.name[lang]}`);
+            if (!args.corrupt) {
+                let bestTools = [];
+                for(let bestTool of await hero.getBestTool()) {
+                    bestTools.push(`${bestTool.name[lang]}`);
+                }
+                let niceTools = [];
+                for(let niceTool of await hero.getNiceTool()) {
+                    niceTools.push(`${niceTool.name[lang]}`);
+                }
+                let desc = [];
+                desc.push(`<:tl_6:683189304591122450> ${bestTools.length > 0 ? bestTools.join('') : 'None'}`);
+                desc.push(`<:tl_5:683189304809619499> ${niceTools.join('')}`);
+                embed0.setDescription(`${hero.getGrade()}\n\n${desc.join('\n')}`);
+            } else {
+                let desc = [];
+                desc.push(`<:card_hp:683194281447653432> ${hero.data.HPBase}`);
+                desc.push(`<:card_st:683194281195733009> ${hero.data.AtkBase}`);
+                desc.push(`<:card_df:683194281199927306> ${hero.data.DefBase}`);
+                const embed2 = new MessageEmbed()
+                .setColor('#f296fb')
+                .setAuthor(hero.name[lang], icon)
+                .setThumbnail(idle)
+                let keywordNames = [];
+                for(let keyword of await hero.getKeywords()) {
+                    embed2.addField(`**${keyword.name[lang]}**`, `• ${keyword.getDesc(lang)}`);
+                    keywordNames.push(`• ${keyword.name[lang]}`);
+                }
+                embeds.push(embed2);
+                embed0.setDescription(`${hero.getGrade()}\n\n${desc.join('')}`);
+                embed0.addField('Keywords', `${keywordNames.join('\n')}`);
             }
-            let niceTools = [];
-            for(let niceTool of await hero.getNiceTool()) {
-                niceTools.push(`${niceTool.name[lang]}`);
-            }
-            let desc = [];
-            desc.push(`<:tl_6:683189304591122450> ${bestTools.length > 0 ? bestTools.join('') : 'None'}`);
-            desc.push(`<:tl_5:683189304809619499> ${niceTools.join('')}`);
-            embed0.setDescription(`${hero.getGrade()}\n\n${desc.join('\n')}`);
 
             const pagedEmbed = new Pagination.Embeds()
-            .setArray([embed0, embed1])
+            .setArray(embeds)
             .setAuthorizedUsers([message.author.id])
             .setChannel(message.channel)
             .setPageIndicator(false)

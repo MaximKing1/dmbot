@@ -23,6 +23,7 @@ class DMClient extends AkairoClient {
 
 const client = new DMClient();
 client.models = models;
+client.cloudinary = process.env.CLOUDINARY_SPRITEURL;
 
 client.once('ready', () => {
   console.log('Ready!');
