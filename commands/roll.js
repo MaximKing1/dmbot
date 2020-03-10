@@ -55,6 +55,6 @@ function roll(num, size) {
         values: result,
         total: sum
     };
-  }
+}
 
 module.exports = RollCommand;
