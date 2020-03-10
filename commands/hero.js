@@ -87,7 +87,7 @@ class HeroCommand extends Command {
             let embeds = [];
             let items = [];
             await result.forEach((hero, i) => {
-                items.push(`${i + 1} • ${args.corrupt ? 'Corrupted' : ''} ${hero.name[lang]}`);
+                items.push(`${i + 1} • ${args.corrupt ? 'Corrupted' : ''} ${hero.getName(lang)}`);
                 if (items.length == 10 || i == result.length - 1) {
                     embeds.push(new MessageEmbed()
                     .setColor('#f296fb')
@@ -116,13 +116,13 @@ class HeroCommand extends Command {
             let idle = `${spriteUrl}${hero.data.Sprite}_idle01.png`;
             const embed0 = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(hero.name[lang], icon)
+            .setAuthor(hero.getName(lang), icon)
             .setThumbnail(idle);
             embeds.push(embed0);
 
             const embed1 = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(hero.name[lang], icon)
+            .setAuthor(hero.getName(lang), icon)
             .setThumbnail(idle);
             let skillNames = [];
             for(let skill of await hero.getSkills()) {
@@ -152,7 +152,7 @@ class HeroCommand extends Command {
                 desc.push(`<:card_df:683194281199927306> ${hero.data.DefBase}`);
                 const embed2 = new MessageEmbed()
                 .setColor('#f296fb')
-                .setAuthor(hero.name[lang], icon)
+                .setAuthor(hero.getName(lang), icon)
                 .setThumbnail(idle)
                 let keywordNames = [];
                 for(let keyword of await hero.getKeywords()) {

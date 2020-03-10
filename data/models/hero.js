@@ -2,6 +2,10 @@ const { Model } = require('sequelize');
 const N = require('numeral');
 
 class Hero extends Model {
+    getName(lang = 'Eng') {
+        return this.name[lang];
+    }
+
     getGrade() {
         let grade = [];
         if (this.data.Grade < 5) {
