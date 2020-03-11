@@ -30,6 +30,8 @@ client.once('ready', () => {
   client.user.setActivity('Dungeon Maker', { url: 'https://www.twitch.tv/search?term=Dungeon%20Maker', type: 'STREAMING'});
 });
 
+client.login(process.env.BOT_TOKEN);
+
 client.on('messageReactionAdd', async (messageReaction, user) => {
   console.log('hey');
   if (messageReaction.message.partial) {
@@ -88,5 +90,3 @@ client.on('messageReactionRemove', async (messageReaction, user) => {
     });
   }
 });
-
-client.login(process.env.BOT_TOKEN);
