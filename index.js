@@ -8,7 +8,8 @@ class DMClient extends AkairoClient {
     super({
       ownerID: '308147981314424840'
     }, {
-      disableEveryone: true
+      disableEveryone: true,
+      partials: ['MESSAGE', 'CHANNEL', 'REACTION']
     });
 
     this.commandHandler = new CommandHandler(this, {
@@ -30,10 +31,7 @@ client.once('ready', () => {
   client.user.setActivity('Dungeon Maker', { url: 'https://www.twitch.tv/search?term=Dungeon%20Maker', type: 'STREAMING'});
 });
 
-client.login(process.env.BOT_TOKEN);
-
 client.on('messageReactionAdd', async (messageReaction, user) => {
-  console.log('hey');
   if (messageReaction.message.partial) {
 		try {
 			await messageReaction.message.fetch();
@@ -90,3 +88,5 @@ client.on('messageReactionRemove', async (messageReaction, user) => {
     });
   }
 });
+
+client.login(process.env.BOT_TOKEN);
