@@ -4,7 +4,8 @@ let e = {};
 e.database = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASS, {
 	dialect: 'sqlite',
 	logging: false,
-	storage: 'data/database.sqlite',
+	storage: 'database.sqlite',
+	host: 'cloudinary://866841438624761:XSEoRmb5iAwELuAdGIh4zf3Evis@hq0ppy0db'
 });
 // # Database Models
 e.Relic = e.database.import('data/models/relic');
