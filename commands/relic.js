@@ -73,10 +73,12 @@ class RelicCommand extends Command {
             .setChannel(message.channel)
             .setPageIndicator(false)
             .setDisabledNavigationEmojis(['JUMP'])
-            .setDeleteOnTimeout(true);
+            .setDeleteOnTimeout(true)
+            .setTimeout(60000);
 
             message.reply('', { files: pagedEmbed.currentEmbed.files }).then(reply => {
                 pagedEmbed.setClientAssets({ message: reply }).build();
+                message.delete();
             });
         } else if (result.length == 1) {
             let relic = result[0];
@@ -92,6 +94,7 @@ class RelicCommand extends Command {
             .setChannel(message.channel)
             .setPageIndicator(false)
             .setDeleteOnTimeout(true)
+            .setTimeout(60000)
             .setDisabledNavigationEmojis(['BACK', 'JUMP', 'FORWARD'])
             .setFooter(' ')
             .addFunctionEmoji('📌', (user, instance) => {
@@ -103,6 +106,7 @@ class RelicCommand extends Command {
 
             message.reply('•', { files: pagedEmbed.currentEmbed.files }).then(reply => {
                 pagedEmbed.setClientAssets({ message: reply }).build();
+                message.delete();
             });
         }
     }
