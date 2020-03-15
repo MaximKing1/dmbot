@@ -1,4 +1,4 @@
-const { AkairoClient, CommandHandler } = require('discord-akairo');
+const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo');
 const models = require('./models');
 const replaceAll = require('string.prototype.replaceall');
 replaceAll.shim();
@@ -28,7 +28,7 @@ class DMClient extends AkairoClient {
       commandHandler: this.commandHandler,
       listenerHandler: this.listenerHandler
     });
-    
+
     this.commandHandler.loadAll();
   }
 }
