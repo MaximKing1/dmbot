@@ -65,11 +65,11 @@ class RollCommand extends Command {
 
         let dice = roll(num, size, keep, add, minus, args.adv, args.dis);
 
-        message.channel.send(`${message.author} 🎲\n**Result:** ${num}d${size}${keep ? `k${keep}` : ''} (${dice.values.join(', ')})${add ? ` + ${add}` : ''}${minus ? ` + ${minus}` : ''}\n**Total:** ${dice.total}${args.adv ? '\nRolled with Advantage' : ''}${args.dis ? '\nRolled with Disdvantage' : ''}`);
+        message.channel.send(`${message.author} 🎲\n**Result:** ${num}d${size}${keep ? `k${keep}` : ''} (${dice.values.join(', ')})${add ? ` + ${add}` : ''}${minus ? ` - ${minus}` : ''}\n**Total:** ${dice.total}${args.adv ? '\nRolled with Advantage' : ''}${args.dis ? '\nRolled with Disdvantage' : ''}`);
     }
 }
 
-function roll(num, size, keep, add, minus, adv, dis) {
+function roll(num = 1, size = 20, keep, add, minus, adv, dis) {
     var result;
 
     if (adv) {
