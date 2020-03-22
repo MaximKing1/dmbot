@@ -9,18 +9,44 @@ class RollCommand extends Command {
            aliases: ['roll', 'r'],
            args: [
                 {
-                    id: 'searchString',
-                    type: 'string',
+                    id: 'num',
+                    type: /([0-9])d/i,
+                    match: 'text'
+                }, {
+                    id: 'size',
+                    type: /d([0-9])/i,
                     match: 'text',
-                    default: '1d6'
+                }, {
+                    id: 'keep',
+                    type: /k([0-9])/i,
+                    match: 'text',
+                }, {
+                    id: 'add',
+                    type: /\+([0-9])/i,
+                    match: 'text',
+                }, {
+                    id: 'minus',
+                    type: /\-([0-9])/i,
+                    match: 'text',
+                }, {
+                    id: 'adv',
+                    match: 'flag',
+                    flag: 'adv'
+                }, {
+                    id: 'dis',
+                    match: 'flag',
+                    flag: 'dis'
                 }
             ]
         });
     }
 
     async exec(message, args) {
-        let num = args.searchString.length > 0 ? args.searchString.split('d')[0] : 1;
-        let size = args.searchString.length > 0 ? args.searchString.split('d')[1] : 20;
+        let num = args.num ? Number(args.num.match[1]) : 1;
+        let size = args.size ? Number(args.size.match[1]) : 20;
+        let keep = args.keep ? Number(args.keep.match[1]) : null;
+        let add = args.add ? Number(args.add.match[1]) : null;
+        let minus = args.minus ? Number(args.minus.match[1]) : null;
 
         if (num > 300 || size < 1) {
             message.channel.send(`${message.author} 🎲\nInvalid input: Too many dice rolled.`);
@@ -37,23 +63,53 @@ class RollCommand extends Command {
             }
         }
 
-        let dice = roll(num, size);
+        let dice = roll(num, size, keep, add, minus, args.adv, args.dis);
 
-        message.channel.send(`${message.author} 🎲\n**Result:** ${num}d${size} (${dice.values.join(', ')})\n**Total:** ${dice.total}`);
+        message.channel.send(`${message.author} 🎲\n**Result:** ${num}d${size}${keep ? `k${keep}` : ''} (${dice.values.join(', ')})${add ? ` + ${add}` : ''}${minus ? ` + ${minus}` : ''}\n**Total:** ${dice.total}${args.adv ? '\nRolled with Advantage' : ''}${args.dis ? '\nRolled with Disdvantage' : ''}`);
     }
 }
 
-function roll(num, size) {
-    var result = chance.rpg(`${num}d${size}`);
-    var sum = 0;
+function roll(num, size, keep, add, minus, adv, dis) {
+    var result;
 
-    for (var i of result) {
-        sum += i;
+    if (adv) {
+        var r1 = chance.rpg(`${num}d${size}`);
+        var r2 = chance.rpg(`${num}d${size}`);
+
+        result = r1 > r2 ? r1 : r2;
+    } else if (dis) {
+        var r1 = chance.rpg(`${num}d${size}`);
+        var r2 = chance.rpg(`${num}d${size}`);
+
+        result = r1 < r2 ? r1 : r2;
+    } else {
+        result = chance.rpg(`${num}d${size}`);
+    }
+
+    var total = 0;
+    var ores = [...result];
+    if (keep) {
+        var sorted = result.sort().reverse();
+        for (var i = 0; i < keep; i++) {
+            total += sorted[i];
+        }
+    } else {
+        for (var i of result) {
+            total += i;
+        }
+    }
+
+    if (add) {
+        total += add;
+    }
+
+    if (minus) {
+        total -= minus;
     }
 
     return {
-        values: result,
-        total: sum
+        values: ores,
+        total: total
     };
 }
 
