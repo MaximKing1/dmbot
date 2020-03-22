@@ -10,23 +10,23 @@ class RollCommand extends Command {
            args: [
                 {
                     id: 'num',
-                    type: /([0-9])d/i,
+                    type: /([0-9]+)d/i,
                     match: 'text'
                 }, {
                     id: 'size',
-                    type: /d([0-9])/i,
+                    type: /d([0-9]+)/i,
                     match: 'text',
                 }, {
                     id: 'keep',
-                    type: /k([0-9])/i,
+                    type: /k([0-9]+)/i,
                     match: 'text',
                 }, {
                     id: 'add',
-                    type: /\+([0-9])/i,
+                    type: /\+([0-9]+)/i,
                     match: 'text',
                 }, {
                     id: 'minus',
-                    type: /\-([0-9])/i,
+                    type: /\-([0-9]+)/i,
                     match: 'text',
                 }, {
                     id: 'adv',
