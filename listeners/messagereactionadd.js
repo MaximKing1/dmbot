@@ -44,6 +44,8 @@ class MessageReactionAddListener extends Listener {
 
             guild.members.fetch(user.id).then(member => {
                 member.roles.add(role);
+                const announcementRole = guild.roles.resolve('514640315253260299');
+                member.roles.add(announcementRole);
             });
         }
 
@@ -105,8 +107,6 @@ class MessageReactionAddListener extends Listener {
 
             guild.members.fetch(user.id).then(member => {
                 member.roles.add(role);
-                const announcementRole = guild.roles.resolve('514640315253260299');
-                member.roles.add(announcementRole);
             });
         }
     }
