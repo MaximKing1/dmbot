@@ -45,10 +45,8 @@ class Room extends Model {
     getRecipes(lang = 'Eng') {
         let recipes = [];
 
-        if (!this.data.Recipe) {
-            for (let recipe of this.data.Recipe) {
-                recipes.push(`• ${recipe[lang]}`);
-            }
+        for (let recipe of this.data.Recipe) {
+            recipes.push(`• ${recipe[lang]}`);
         }
 
         return recipes;

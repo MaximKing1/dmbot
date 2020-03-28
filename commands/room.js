@@ -88,7 +88,7 @@ class RoomCommand extends Command {
             .setAuthor(room.name[lang], `${spriteUrl}CardRoom.png`)
             .setThumbnail(`${spriteUrl}${room.id}.png`)
             .setDescription(`• ${room.getDesc(lang)}`);
-            if (!room.getRecipes()) {
+            if (room.getRecipes().length > 0) {
                 embed.addField('Recipe', room.getRecipes().join('\n'));
             }
             
