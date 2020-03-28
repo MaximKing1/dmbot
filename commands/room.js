@@ -42,8 +42,8 @@ class RoomCommand extends Command {
         let spriteUrl = this.client.cloudinary;
         let Room = this.client.models.Room;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
-        if (args.level < 0) {
-            args.level = 0;
+        if (args.level < 1) {
+            args.level = 1;
         } else if (args.level > 9999) {
             args.level = 9999;
         }
