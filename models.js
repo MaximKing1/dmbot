@@ -23,6 +23,7 @@ e.DarkLord = e.database.import('data/models/darklord');
 e.Room = e.database.import('data/models/room');
 e.Blessing = e.database.import('data/models/blessing');
 e.BossBattle = e.database.import('data/models/bossbattle');
+e.Map = e.database.import('data/models/map');
 
 // # Associations
 // Monster - Skill
