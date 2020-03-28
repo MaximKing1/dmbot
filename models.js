@@ -21,6 +21,8 @@ e.Hero = e.database.import('data/models/hero');
 e.Corrupted = e.database.import('data/models/corrupted');
 e.DarkLord = e.database.import('data/models/darklord');
 e.Room = e.database.import('data/models/room');
+e.Blessing = e.database.import('data/models/blessing');
+e.BossBattle = e.database.import('data/models/bossbattle');
 
 // # Associations
 // Monster - Skill
@@ -65,5 +67,8 @@ e.Rebirth.belongsToMany(e.DarkLord, { through: 'DarkLordRebirths' });
 // DarkLord - Awakening
 e.DarkLord.belongsToMany(e.Awakening, { through: 'DarkLordAwakenings' });
 e.Awakening.belongsToMany(e.DarkLord, { through: 'DarkLordAwakenings' });
+// BossBattle - Blessings
+e.BossBattle.belongsToMany(e.Blessing, { through: 'BossBattleBlessings' });
+e.Blessing.belongsToMany(e.BossBattle, { through: 'BossBattleBlessings' });
 
 module.exports = e;

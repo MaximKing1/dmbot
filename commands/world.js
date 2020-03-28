@@ -35,14 +35,14 @@ class WorldCommand extends Command {
             where: {
                 name: {
                     [lang]: {
-                        [Op.substring]: args.searchString
+                        [Op.like]: args.searchString
                     }
                 }
             }
         });
 
         if (result.length == 0) {
-            result = await Status.findAll({
+            result = await World.findAll({
                 where: {
                     name: {
                         [lang]: {
