@@ -25,15 +25,13 @@ class RoomCommand extends Command {
                 {
                     id: 'level',
                     match: 'option',
-                    prefix: ['lvl:', 'l:'],
-                    typee: 'number',
+                    flag: 'lvl:',
                     default: 1
                 },
                 {
                     id: 'upgrade',
                     match: 'option',
-                    prefix: ['upg:', 'u:'],
-                    typee: 'number',
+                    flag: 'upg:',
                     default: 0
                 }
             ]
@@ -44,6 +42,17 @@ class RoomCommand extends Command {
         let spriteUrl = this.client.cloudinary;
         let Room = this.client.models.Room;
         let lang = Object.keys(aliases).find(key => aliases[key].toLowerCase() == message.util.parsed.alias.toLowerCase());
+        if (args.level < 0) {
+            args.level = 0;
+        } else if (args.level > 9999) {
+            args.level = 9999;
+        }
+
+        if (args.upgrade < 0) {
+            args.upgrade = 0;
+        } else if (args.upgrade > 10) {
+            args.upgrade = 10;
+        }
         
         let result = await Room.findAll({
             where: {
@@ -99,7 +108,7 @@ class RoomCommand extends Command {
 
             const embed = new MessageEmbed()
             .setColor('#f296fb')
-            .setAuthor(room.name[lang], `${spriteUrl}CardRoom.png`)
+            .setAuthor(`Lv.${args.level} ${room.name[lang]} +${args.upgrade}`, `${spriteUrl}CardRoom.png`)
             .setThumbnail(`${spriteUrl}${room.id}.png`)
             .setDescription(`• ${room.getDesc(lang, args.level, args.upgrade)}`);
             if (room.getRecipes().length > 0) {
