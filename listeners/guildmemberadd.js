@@ -9,9 +9,9 @@ class MessageReactionAddListener extends Listener {
     }
 
     async exec(member) {
-        const guild = this.client.guilds.resolve('496757856662585385');
-        const role = guild.roles.resolve('514640315253260299');
-        member.roles.add(role);
+        // const guild = this.client.guilds.resolve('496757856662585385');
+        // const role = guild.roles.resolve('514640315253260299');
+        // member.roles.add(role);
     }
 }
 
