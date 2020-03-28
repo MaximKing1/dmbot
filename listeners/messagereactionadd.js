@@ -14,6 +14,7 @@ class MessageReactionAddListener extends Listener {
                 await messageReaction.message.fetch();
             } catch (error) {
                 console.log('Something went wrong when fetching the message: ', error);
+                return;
             }
         }
         
@@ -36,9 +37,10 @@ class MessageReactionAddListener extends Listener {
                 case '🇯🇵':
                     role = guild.roles.resolve('496760605751902209');
                     break;
+                default:
+                    messageReaction.remove();
+                    return;
             }
-
-            if (!role) return;
 
             guild.members.fetch(user.id).then(member => {
                 member.roles.add(role);
@@ -55,9 +57,10 @@ class MessageReactionAddListener extends Listener {
                 case '📝':
                     role = guild.roles.resolve('500590427456667648');
                     break;
+                default:
+                    messageReaction.remove();
+                    return;
             }
-
-            if (!role) return;
 
             guild.members.fetch(user.id).then(member => {
                 member.roles.add(role);
@@ -95,9 +98,10 @@ class MessageReactionAddListener extends Listener {
                 case 'Mon_0009_icon':
                     role = guild.roles.resolve('618488478178607134');
                     break;
+                default:
+                    messageReaction.remove();
+                    return;
             }
-
-            if (!role) return;
 
             guild.members.fetch(user.id).then(member => {
                 member.roles.add(role);
