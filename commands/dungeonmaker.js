@@ -20,9 +20,10 @@ class DungeonMakerCommand extends Command {
 
     async exec(message, args) {
         let commands = [];
+        commands.push('!boss *<day>*');
         commands.push('!darklord *<name>*');
         commands.push('!hero *<name>*');
-        commands.push('!hero -c *<name>*');
+        commands.push('!hero -c *<name>* (Shows corrupted hero info)');
         commands.push('!keyword *<name>*');
         commands.push('!monster *<name>*');
         commands.push('!power *<name>*');
