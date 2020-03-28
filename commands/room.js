@@ -21,6 +21,20 @@ class RoomCommand extends Command {
                     type: 'string',
                     match: 'text',
                     default: ''
+                },
+                {
+                    id: 'level',
+                    match: 'option',
+                    prefix: ['lvl:', 'l:'],
+                    typee: 'number',
+                    default: 1
+                },
+                {
+                    id: 'upgrade',
+                    match: 'option',
+                    prefix: ['upg:', 'u:'],
+                    typee: 'number',
+                    default: 0
                 }
             ]
         });
@@ -87,7 +101,7 @@ class RoomCommand extends Command {
             .setColor('#f296fb')
             .setAuthor(room.name[lang], `${spriteUrl}CardRoom.png`)
             .setThumbnail(`${spriteUrl}${room.id}.png`)
-            .setDescription(`• ${room.getDesc(lang)}`);
+            .setDescription(`• ${room.getDesc(lang, args.level, args.upgrade)}`);
             if (room.getRecipes().length > 0) {
                 embed.addField('Recipe', room.getRecipes().join('\n'));
             }

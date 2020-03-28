@@ -2,7 +2,7 @@ const { Model } = require('sequelize');
 const N = require('numeral');
 
 class Room extends Model {
-    getDesc(lang = 'Eng', level, upgrade) {
+    getDesc(lang = 'Eng', level = 1, upgrade = 0) {
         let desc = this.desc[lang];
         desc = desc.replaceAll('[DMG]', `1~${N(getValue(this.data.Damage, this.data.DmgUp, level, upgrade)).format('0')}`);
         desc = desc.replaceAll('[V1]', N(getValue(this.data.Value1, this.data.Grow1, level, upgrade)).format('0'));
@@ -53,7 +53,7 @@ class Room extends Model {
     }
 }
 
-function getValue(base, grow, level = 1, upgrade) {
+function getValue(base, grow, level, upgrade) {
     if(upgrade > 0) level++;
     let result = base + grow * level;
     return upgrade ? result * (1 + getUpgradeValue(upgrade)) : result;
