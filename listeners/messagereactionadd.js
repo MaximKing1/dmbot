@@ -46,6 +46,8 @@ class MessageReactionAddListener extends Listener {
                 member.roles.add(role);
                 const announcementRole = guild.roles.resolve('514640315253260299');
                 member.roles.add(announcementRole);
+                const monsterRole = guild.roles.resolve('496758302794055681');
+                member.roles.add(monsterRole);
             });
         }
 
